@@ -1,7 +1,7 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'nonce-dWRXup6dyLAiOaEIkneBYg=='; style-src 'nonce-dWRXup6dyLAiOaEIkneBYg=='; connect-src https://tkzewzkzfjstfauinrkg.supabase.co; media-src https://tkzewzkzfjstfauinrkg.supabase.co; img-src 'self' data:; base-uri 'none'; form-action 'none'"><meta name="referrer" content="no-referrer"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'nonce-WfpJSWw90Tb0vQOBqSnhPg=='; style-src 'nonce-WfpJSWw90Tb0vQOBqSnhPg=='; connect-src https://tkzewzkzfjstfauinrkg.supabase.co; media-src https://tkzewzkzfjstfauinrkg.supabase.co; img-src 'self' data:; base-uri 'none'; form-action 'none'"><meta name="referrer" content="no-referrer"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Review</title>
-<style nonce="dWRXup6dyLAiOaEIkneBYg==">
+<style nonce="WfpJSWw90Tb0vQOBqSnhPg==">
 :root{--bg:#09090b;--panel:#111113;--panel2:#171719;--panel3:#1e1e22;--line:#24242a;--line2:#33333a;--text:#f4f4f2;--dim:#a1a1a9;--faint:#6c6c74;--accent:#f2b233;--accent-text:#1a1206;--accent-soft:#f2b2331f;--ajustar:#ff6b4a;--aprovado:#31c48d}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font:14px/1.45 "Inter",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
@@ -26,7 +26,7 @@ h1{font-size:24px;line-height:1.2;margin:0;font-weight:600;letter-spacing:-.02em
 .estado{display:inline-flex;align-items:center;gap:6px}
 .ponto{width:8px;height:8px;border-radius:50%;flex:none}
 .versoes{display:flex;gap:4px;flex-wrap:wrap}
-.pilula{height:26px;padding:0 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--dim);font-size:12px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.pilula{flex:none;height:26px;padding:0 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--dim);font-size:12px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
 .pilula:hover{border-color:var(--line2);color:var(--text)}
 .pilula[aria-pressed=true]{background:var(--text);border-color:var(--text);color:#000}
 .cartao{align-self:center;width:min(100%,calc(max(240px,100vh - 360px) * var(--ar)));border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#000;display:flex;flex-direction:column}
@@ -158,6 +158,18 @@ textarea::placeholder,.campo::placeholder{color:var(--faint)}
   .coluna{width:100%}
   aside{border-left:0;border-top:1px solid var(--line);min-height:60vh}
 }
+/* celular: nada quebra em linha torta */
+@media (max-width:600px){
+  h1{font-size:20px}
+  .meta{gap:4px 12px}
+  .meta .sep{display:none}
+  /* versões numa linha só, que rola de lado até a borda da tela */
+  .versoes{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:0 16px}
+  .versoes::-webkit-scrollbar{display:none}
+  .emojis{flex:1;justify-content:space-between}
+  .acoes .decisao{margin-left:0;width:100%;flex-wrap:nowrap}
+  .decisao .b{flex:1;justify-content:center}
+}
 </style></head>
 <body>
 <main>
@@ -232,7 +244,7 @@ textarea::placeholder,.campo::placeholder{color:var(--faint)}
     <button class="b pri" type="submit">Continue</button>
   </form>
 </div>
-<script nonce="dWRXup6dyLAiOaEIkneBYg==">
+<script nonce="WfpJSWw90Tb0vQOBqSnhPg==">
 (function(){
   var EMOJIS = ['❤️','👍','🔥','👏','🙌','👀'];
   var CHAVE = 'review.cliente.nome.v1';
@@ -349,6 +361,8 @@ textarea::placeholder,.campo::placeholder{color:var(--faint)}
       b.title = x.nome + ' · ' + x.nomeStatus;
       b.onclick = function(){ aberta = x.id; desenhar(true); };
       faixa.appendChild(b);
+      // no celular a faixa rola de lado: a versão aberta fica à vista
+      if (x.id === aberta) setTimeout(function(){ faixa.scrollLeft = Math.max(0, b.offsetLeft - faixa.offsetLeft - faixa.clientWidth / 2 + b.offsetWidth / 2); }, 0);
     });
     if (v && trocarVideo) { proporcao(v.w, v.h); video.src = urlVideo(v); }
     $('aprovar').disabled = !v || v.status === 'aprovado';
